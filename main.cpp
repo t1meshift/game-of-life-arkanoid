@@ -51,6 +51,15 @@ void gameLoop(raylib::Window& window) {
             }
         }
 
+        if (auto* touchHandler = dynamic_cast<maslo::TouchInputHandler*>(scene.get())) {
+            touchHandler->clearTouches();
+            auto touchCount = raylib::Touch::GetPointCount();
+            for (int i = 0; i < touchCount; ++i) {
+                auto [x, y] = raylib::Touch::GetPosition(i);
+                touchHandler->addTouch(x, y);
+            }
+        }
+
         scene->update(window.GetFrameTime() * 1000.f);
     }
     //window.DrawFPS();

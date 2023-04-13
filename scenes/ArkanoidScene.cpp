@@ -49,6 +49,20 @@ namespace maslo {
             }
         }
 
+        if (!keys.empty()) {
+            const auto& touches = TouchInputHandler::getRawTouches();
+            if (touches.size() == 3 && !m_gameStarted) {
+                m_gameStarted = true;
+                return;
+            }
+            float padTouchDirection = 0.f;
+            for (const auto& [touchX, _] : touches) {
+                padTouchDirection += (touchX - 400) / 400;
+            }
+            padTouchDirection /= static_cast<float>(touches.size());
+            padX += padVelocity * padTouchDirection / 1000.f * dt;
+        }
+
         // Ball follows pad if the game has not been started
         if (!m_gameStarted) {
             ballX = padX + padWidth / 2.f;

@@ -3,10 +3,11 @@
 #include <optional>
 #include "BaseScene.h"
 #include "../input/KeyboardInputHandler.h"
+#include "../input/TouchInputHandler.h"
 #include "../tools/CellAutomata.h"
 
 namespace maslo {
-    class ArkanoidScene : public BaseScene, public KeyboardInputHandler {
+    class ArkanoidScene : public BaseScene, public KeyboardInputHandler, public TouchInputHandler {
     public:
         explicit ArkanoidScene(size_t fieldWidth, size_t fieldHeight);
         void update(float dt) override;
