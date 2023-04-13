@@ -1,0 +1,17 @@
+{
+  "name" : "raylib-cpp-demo",
+  "version-string" : "1.0.0",
+  "builtin-baseline" : "217194cea7e3491c14779c763beec50b6a4575d6",
+  "dependencies" : [ {
+    "name" : "raylib",
+    "version>=" : "4.5.0",
+    "$comment" : "    # this is heuristically generated, and may not be correct\n\n    find_package(raylib CONFIG REQUIRED)\n\n    target_link_libraries(main PRIVATE raylib)\n"
+  }, {
+    "name" : "raygui",
+    "version>=" : "3.2"
+  }, {
+    "name" : "fmt",
+    "version>=" : "9.1.0#1",
+    "$comment" : "    find_package(fmt CONFIG REQUIRED)\n\n    target_link_libraries(main PRIVATE fmt::fmt)\n"
+  } ]
+}
