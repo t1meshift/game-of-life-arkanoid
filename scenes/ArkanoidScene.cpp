@@ -51,7 +51,7 @@ namespace maslo {
 
         if (!keys.empty()) {
             const auto& touches = TouchInputHandler::getRawTouches();
-            if (touches.size() == 3 && !m_gameStarted) {
+            if (!touches.empty() && !m_gameStarted) {
                 m_gameStarted = true;
                 return;
             }
