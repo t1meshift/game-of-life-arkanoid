@@ -27,9 +27,11 @@ endif()
 add_executable("${EXE_NAME}"
         main.cpp
         tools/CellAutomata.cpp tools/CellAutomata.h
+        tools/PhraseEncoder.h
         scenes/BaseScene.h
         input/KeyboardInputHandler.h
-        scenes/ArkanoidScene.cpp scenes/ArkanoidScene.h input/TouchInputHandler.h)
+        input/TouchInputHandler.h
+        scenes/ArkanoidScene.cpp scenes/ArkanoidScene.h)
 
 if (EMSCRIPTEN)
     target_link_options("${EXE_NAME}" PRIVATE "--shell-file" "${CMAKE_CURRENT_LIST_DIR}/emshell.html")

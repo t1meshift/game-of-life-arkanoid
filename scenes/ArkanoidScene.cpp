@@ -1,5 +1,8 @@
 #include <random>
+#include <array>
 #include <fmt/format.h>
+#include "../tools/PhraseEncoder.h"
+
 #include "ArkanoidScene.h"
 
 namespace {
@@ -19,6 +22,7 @@ namespace {
     constexpr int cellHeight = 16;
 
     const raylib::Color bgColor = raylib::Color::Black();
+    const raylib::Color seedColor = raylib::Color::Gray();
     const raylib::Color hudColor = raylib::Color::White();
 
     const raylib::Color cellColor = raylib::Color::White();
@@ -92,12 +96,29 @@ namespace maslo {
 
     void ArkanoidScene::onAttach() {
         std::random_device rd;
-        std::mt19937 gen(rd());
+        auto seed = rd();
+
+        // TODO: Load seed?
+        maslo::PhraseEncoder enc;
+        std::vector<uint8_t> seedBytes{
+            static_cast<unsigned char>(seed >> 24),
+            static_cast<unsigned char>((seed >> 16) & 0xFF),
+            static_cast<unsigned char>((seed >> 8) & 0xFF),
+            static_cast<unsigned char>(seed & 0xFF)
+        };
+        m_seed = enc.encode(seedBytes);
+
+        std::mt19937 gen(seed);
         std::uniform_int_distribution<> distrib(1, 1000000);
+
+        std::vector<uint8_t> rawField;
+        rawField.reserve(m_fieldHeight * m_fieldWidth);
 
         for (int i = 0; i < m_fieldHeight; ++i) {
             for (int j = 0; j < m_fieldWidth; ++j) {
-                if (distrib(gen) > static_cast<int>(distrib.max() * (1 - cellSpawnProbability))) {
+                auto state = distrib(gen) > static_cast<int>(distrib.max() * (1 - cellSpawnProbability));
+                rawField.push_back(state);
+                if (state) {
                     m_automata.setCell(j, i, 1);
                 }
             }
@@ -106,9 +127,7 @@ namespace maslo {
         resetGame();
     }
 
-    void ArkanoidScene::onDetach() {
-
-    }
+    void ArkanoidScene::onDetach() {}
 
     std::pair<int, int> ArkanoidScene::cellXYToWorldXY(int x, int y) {
         return {x * cellWidth, cellOffsetY + (y * cellHeight)};
@@ -142,6 +161,9 @@ namespace maslo {
             }
         }
 
+        // Draw seed
+        seedColor.DrawText(m_seed, 10, 570, 20);
+
         // Draw ball
         DrawCircleV({ballX, ballY},
                     ballRadius, static_cast<::Color>(ballColor));
@@ -174,6 +196,7 @@ namespace maslo {
         }
 
         if (ballBottom > padY && ballLeft >= padX && ballRight <= padX + padWidth) {
+            ballY = padY - 1 - ballRadius / 2.f;
             ballVY *= -1;
             beep = true;
         }
@@ -184,6 +207,7 @@ namespace maslo {
         }
 
         if (ballTop <= 0) {
+            ballY = 1 + ballRadius / 2.f;
             ballVY *= -1;
             beep = true;
         }

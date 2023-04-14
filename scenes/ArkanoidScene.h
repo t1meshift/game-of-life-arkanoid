@@ -21,6 +21,7 @@ namespace maslo {
         void resetGame();
     private:
         CellAutomata m_automata;
+        std::string m_seed;
         size_t m_fieldWidth, m_fieldHeight;
         float padX = 0;
         float ballX = 0, ballY = 0;
