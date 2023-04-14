@@ -4,4 +4,4 @@
 
 Just another cringe project made with C++20 + Raylib/Raylib-cpp + Vcpkg + Emscripten.
 
-# [Play now](gh-pages/demo.html)
+# [Play now](https://t1meshift.github.io/game-of-life-arkanoid/gh-pages/demo.html)
