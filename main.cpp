@@ -57,6 +57,7 @@ void gameLoop(raylib::Window& window) {
             for (int i = 0; i < touchCount; ++i) {
                 auto [x, y] = raylib::Touch::GetPosition(i);
                 touchHandler->addTouch(x, y);
+                TraceLog(LOG_INFO, "Touch @ %.3f %.3f", x, y);
             }
         }
 
